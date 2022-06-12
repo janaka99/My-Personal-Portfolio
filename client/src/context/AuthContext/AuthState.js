@@ -57,17 +57,24 @@ const AuthState = (props) => {
   };
 
   const loadUSer = async () => {
+    console.log("Good job 1");
+
     try {
       dispatch({
         type: LOGIN_CALL,
       });
+      console.log("Good job 2");
 
       await API.get("/api/user").then((res) => {
         if (res.data.error) {
+          console.log("Good job 3");
+
           dispatch({
             type: LOGOUT_SUCCESS,
           });
         } else {
+          console.log("Good job 4");
+
           dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,
@@ -75,6 +82,8 @@ const AuthState = (props) => {
         }
       });
     } catch (error) {
+      console.log("Good job 5");
+
       dispatch({
         type: LOGOUT_SUCCESS,
       });
