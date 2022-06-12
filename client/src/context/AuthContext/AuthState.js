@@ -24,7 +24,7 @@ const AuthState = (props) => {
 
   //LOG IN Call
   const API = axios.create({
-    baseURL: "",
+    baseURL: "https://github.com/janaka99/My-Personal-Portfolio",
   });
 
   API.interceptors.request.use((req) => {

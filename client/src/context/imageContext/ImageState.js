@@ -26,7 +26,7 @@ const ImageState = (props) => {
   //add image
 
   const API = axios.create({
-    baseURL: "",
+    baseURL: "https://github.com/janaka99/My-Personal-Portfolio",
   });
   API.interceptors.request.use((req) => {
     if (localStorage.getItem("user")) {
