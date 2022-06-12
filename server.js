@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://github.com/janaka99/My-Personal-Portfolio",
+    origin: "https://janakachamith.herokuapp.com/",
     credentials: true,
   })
 );
