@@ -25,6 +25,7 @@ const AuthState = (props) => {
   //LOG IN Call
   const API = axios.create({
     baseURL: "https://janakachamith.herokuapp.com/",
+    methodsL: ["GET", "PUT", "POST"],
   });
 
   API.interceptors.request.use((req) => {
