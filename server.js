@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://github.com/janaka99/My-Personal-Portfolio",
     credentials: true,
   })
 );
