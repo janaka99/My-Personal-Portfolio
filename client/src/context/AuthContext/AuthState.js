@@ -24,7 +24,7 @@ const AuthState = (props) => {
 
   //LOG IN Call
   const API = axios.create({
-    baseURL: "https://janakachamith.herokuapp.com/",
+    baseURL: "https://janakachamith.herokuapp.com",
     methodsL: ["GET", "PUT", "POST"],
   });
 
@@ -57,23 +57,17 @@ const AuthState = (props) => {
   };
 
   const loadUSer = async () => {
-    console.log("Good job 1");
-
     try {
       dispatch({
         type: LOGIN_CALL,
       });
-      console.log("Good job 2");
+
       await API.get("/api/user").then((res) => {
         if (res.data.error) {
-          console.log("Good job 3");
-
           dispatch({
             type: LOGOUT_SUCCESS,
           });
         } else {
-          console.log("Good job 4");
-
           dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,
@@ -81,8 +75,6 @@ const AuthState = (props) => {
         }
       });
     } catch (error) {
-      console.log("Good job 5");
-
       dispatch({
         type: LOGOUT_SUCCESS,
       });
@@ -90,6 +82,8 @@ const AuthState = (props) => {
   };
 
   const logIn = async (data) => {
+    console.log("Good job 1");
+
     try {
       // dispatch({
       //   type: LOGIN_CALL,
@@ -97,21 +91,27 @@ const AuthState = (props) => {
       setTimeout(() => {
         API.post("/api/user/login-call", data).then((res) => {
           if (res.data.token) {
-            console.log(res.data);
+            console.log("Good job 2");
+
+            console.log("hello data", res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
             dispatch({
               type: LOGIN_SUCCESS,
               payload: res.data,
             });
           } else {
+            console.log("Good job 3");
+
             dispatch({
               type: LOGIN_FAILED,
               payload: res.data,
             });
           }
         });
-      });
+      }, 1000);
     } catch (error) {
+      console.log("Good job 4");
+
       dispatch({
         type: LOGIN_FAILED,
       });
