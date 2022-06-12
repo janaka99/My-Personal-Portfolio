@@ -81,9 +81,9 @@ const AuthState = (props) => {
 
   const logIn = async (data) => {
     try {
-      dispatch({
-        type: LOGIN_CALL,
-      });
+      // dispatch({
+      //   type: LOGIN_CALL,
+      // });
       setTimeout(() => {
         API.post("/api/user/login-call", data).then((res) => {
           if (res.data.token) {

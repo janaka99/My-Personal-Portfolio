@@ -28,7 +28,7 @@ router.get("/", auth, (req, res) => {
 });
 
 router.post("/login-call", async (req, res) => {
-  res.status(500).json({ message: err.message, username: req.body.username });
+  // res.status(100).json({ message: err.message, username: req.body.username });
   try {
     con.query(
       "select password from user where name=?",
@@ -36,8 +36,8 @@ router.post("/login-call", async (req, res) => {
       async function (err, result) {
         if (err) {
           res
-            .status(500)
-            .json({ message: err.message, username: req.body.username });
+            .status(105)
+            .json({ error: err.message, username: req.body.username });
         } else {
           const isPassword = await bcrypt.compare(
             req.body.password,
@@ -49,9 +49,7 @@ router.post("/login-call", async (req, res) => {
               req.body.username,
               (err, result) => {
                 if (err) {
-                  res
-                    .status(500)
-                    .json({ message: "Password or username is invalid" });
+                  res.status(106).json({ error: err.message });
                 } else {
                   const token = createToken({
                     id: result[0].userId,
@@ -65,13 +63,13 @@ router.post("/login-call", async (req, res) => {
             );
           } else {
             console.log("Wrong password");
-            res.status(500).json({ message: "Something Went wrong!!" });
+            res.status(341).json({ message: "Something Went wrong!!" });
           }
         }
       }
     );
   } catch (error) {
-    res.status(400).json({ error: "Login failed" });
+    res.status(400).json({ error: error.message });
   }
 });
 
