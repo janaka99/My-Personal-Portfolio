@@ -96,6 +96,7 @@ const AuthState = (props) => {
           } else {
             dispatch({
               type: LOGIN_FAILED,
+              payload: res.data,
             });
           }
         });

@@ -22,6 +22,7 @@ const AuthReducer = (state, action) => {
         user: null,
         loading: false,
         isAuthenticated: false,
+        flashMessage: action.payload,
       };
     case LOGIN_CALL:
     case LOGOUT_CALL:
