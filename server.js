@@ -18,6 +18,7 @@ app.use(
   cors({
     origin: "https://janakachamith.herokuapp.com",
     credentials: true,
+    methods: ["GET", "PUT", "POST"],
   })
 );
 
