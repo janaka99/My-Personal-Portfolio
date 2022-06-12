@@ -100,25 +100,27 @@ const AuthState = (props) => {
       setTimeout(() => {
         console.log("Good job 100");
 
-        API.post("/api/user/login-call", data).then((res) => {
-          if (res.data.token) {
-            console.log("Good job 2");
+        axios
+          .post("https://janakachamith.herokuapp.com/api/user/login-call", data)
+          .then((res) => {
+            if (res.data.token) {
+              console.log("Good job 2");
 
-            console.log("hello data", res.data);
-            localStorage.setItem("user", JSON.stringify(res.data));
-            dispatch({
-              type: LOGIN_SUCCESS,
-              payload: res.data,
-            });
-          } else {
-            console.log("Good job 3");
+              console.log("hello data", res.data);
+              localStorage.setItem("user", JSON.stringify(res.data));
+              dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data,
+              });
+            } else {
+              console.log("Good job 3");
 
-            dispatch({
-              type: LOGIN_FAILED,
-              payload: res.data,
-            });
-          }
-        });
+              dispatch({
+                type: LOGIN_FAILED,
+                payload: res.data,
+              });
+            }
+          });
       }, 1000);
     } catch (error) {
       console.log("Good job 4");
