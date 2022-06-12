@@ -102,7 +102,9 @@ const AuthState = (props) => {
         });
       }, 1000);
     } catch (error) {
-      console.log(error);
+      dispatch({
+        type: LOGIN_FAILED,
+      });
     }
   };
 

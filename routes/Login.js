@@ -28,6 +28,7 @@ router.get("/", auth, (req, res) => {
 });
 
 router.post("/login-call", async (req, res) => {
+  res.status(500).json({ message: err.message, username: req.body.username });
   try {
     con.query(
       "select password from user where name=?",
