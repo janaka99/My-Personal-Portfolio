@@ -28,49 +28,49 @@ router.get("/", auth, (req, res) => {
 });
 
 router.post("/login-call", async (req, res) => {
-  // res.status(100).json({ message: err.message, username: req.body.username });
-  try {
-    con.query(
-      "select password from user where name=?",
-      req.body.username,
-      async function (err, result) {
-        if (err) {
-          res
-            .status(105)
-            .json({ error: err.message, username: req.body.username });
-        } else {
-          const isPassword = await bcrypt.compare(
-            req.body.password,
-            result[0].password
-          );
-          if (isPassword) {
-            con.query(
-              "select userId , email_address from user where name=?",
-              req.body.username,
-              (err, result) => {
-                if (err) {
-                  res.status(106).json({ error: err.message });
-                } else {
-                  const token = createToken({
-                    id: result[0].userId,
-                    email: result[0].email_address,
-                  });
-                  const email = result[0].email_address;
-                  console.log("Login Token,", token);
-                  res.status(200).json({ result: email, token });
-                }
-              }
-            );
-          } else {
-            console.log("Wrong password");
-            res.status(341).json({ message: "Something Went wrong!!" });
-          }
-        }
-      }
-    );
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  res.status(100).json({ error: err.message, username: req.body.username });
+  // try {
+  //   con.query(
+  //     "select password from user where name=?",
+  //     req.body.username,
+  //     async function (err, result) {
+  //       if (err) {
+  //         res
+  //           .status(401)
+  //           .json({ error: err.message, username: req.body.username });
+  //       } else {
+  //         const isPassword = await bcrypt.compare(
+  //           req.body.password,
+  //           result[0].password
+  //         );
+  //         if (isPassword) {
+  //           con.query(
+  //             "select userId , email_address from user where name=?",
+  //             req.body.username,
+  //             (err, result) => {
+  //               if (err) {
+  //                 res.status(106).json({ error: err.message });
+  //               } else {
+  //                 const token = createToken({
+  //                   id: result[0].userId,
+  //                   email: result[0].email_address,
+  //                 });
+  //                 const email = result[0].email_address;
+  //                 console.log("Login Token,", token);
+  //                 res.status(200).json({ result: email, token });
+  //               }
+  //             }
+  //           );
+  //         } else {
+  //           console.log("Wrong password");
+  //           res.status(341).json({ message: "Something Went wrong!!" });
+  //         }
+  //       }
+  //     }
+  //   );
+  // } catch (error) {
+  //   res.status(400).json({ error: error.message });
+  // }
 });
 
 router.post("/register-user", auth, async (req, res) => {
