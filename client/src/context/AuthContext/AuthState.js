@@ -98,6 +98,8 @@ const AuthState = (props) => {
       //   type: LOGIN_CALL,
       // });
       setTimeout(() => {
+        console.log("Good job 100");
+
         API.post("/api/user/login-call", data).then((res) => {
           if (res.data.token) {
             console.log("Good job 2");
