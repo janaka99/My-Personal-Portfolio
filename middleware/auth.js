@@ -20,11 +20,11 @@ const auth = async (req, res, next) => {
         }
       );
     } catch (error) {
-      res.status(500).json({ error: "User Authentication Failed" });
+      res.status(401).json({ error: "User Authentication Failed" });
     }
     // next();
   } catch (error) {
-    res.status(400).json({ error: "Authorization failed" });
+    res.status(401).json({ error: "Authorization failed" });
   }
 };
 

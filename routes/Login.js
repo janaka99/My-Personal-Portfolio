@@ -18,10 +18,10 @@ const createToken = (id) => {
 //   }
 // },[])
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
   try {
-    // res.status(200).json(req.userEmail);
-    res.status(200).json({ msg: "hellowrodl" });
+    res.status(200).json(req.userEmail);
+    // res.status(200).json({ msg: "hellowrodl" });
   } catch (err) {
     res.status(400).json({ error: "Something goes wrong" });
   }
