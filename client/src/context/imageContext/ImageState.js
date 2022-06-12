@@ -27,6 +27,7 @@ const ImageState = (props) => {
 
   const API = axios.create({
     baseURL: "https://janakachamith.herokuapp.com/",
+    allowedHeaders: ["Content-Type", "authorization"],
   });
   API.interceptors.request.use((req) => {
     if (localStorage.getItem("user")) {
