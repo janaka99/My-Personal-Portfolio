@@ -14,7 +14,12 @@ const session = require("express-session");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://janakachamith.herokuapp.com",
+    credentials: true,
+  })
+);
 
 const loginRoutes = require("./routes/Login");
 
