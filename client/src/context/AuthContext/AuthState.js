@@ -43,7 +43,7 @@ const AuthState = (props) => {
       if (localStorage.getItem("user")) {
         setTimeout(() => {
           loadUSer();
-        }, 5000);
+        });
       } else {
         dispatch({
           type: LOGOUT_SUCCESS,
@@ -101,7 +101,7 @@ const AuthState = (props) => {
             });
           }
         });
-      }, 1000);
+      });
     } catch (error) {
       dispatch({
         type: LOGIN_FAILED,
