@@ -16,8 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: true,
-    methods: ["GET", "PUT", "POST"],
+    origin: "https://janakachamith.herokuapp.com",
     credentials: true,
   })
 );
