@@ -26,8 +26,8 @@ const ImageState = (props) => {
   //add image
 
   const API = axios.create({
-    baseURL: "http://localhost:5000",
-    // baseURL: "https://janakachamith.herokuapp.com",
+    // baseURL: "http://localhost:5000",
+    baseURL: "https://janakachamith.herokuapp.com",
     allowedHeaders: ["Content-Type", "authorization"],
   });
   API.interceptors.request.use((req) => {

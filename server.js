@@ -8,15 +8,12 @@ const fs = require("fs");
 const dotenv = require("dotenv").config({ path: "./config/config.env" });
 
 const session = require("express-session");
-
+const url = process.env.mongoURL;
 mongoose
-  .connect(
-    "mongodb+srv://janakachamith:v2ysmgVeCRr2KE50@cluster0.a88j5ma.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("database Conntected");
   })
@@ -29,8 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    // origin: "https://janakachamith.herokuapp.com",
+    // origin: "http://localhost:3000",
+    origin: "https://janakachamith.herokuapp.com",
     credentials: true,
     methods: ["GET", "PUT", "POST"],
   })
@@ -54,9 +51,9 @@ app.use(
 app.use("/api/user", loginRoutes);
 app.use("/api/image", imageRoutes);
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "/client/build", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+});
 
 //server static assets if we in production
 
