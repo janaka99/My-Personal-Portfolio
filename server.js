@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const { auth } = require("./middleware/auth");
+const mongoose = require("mongoose");
 const { expressError } = require("./middleware/ExpressError");
 const multer = require("multer");
 const path = require("path");
@@ -9,20 +10,35 @@ const fs = require("fs");
 const dotenv = require("dotenv").config({ path: "./config/config.env" });
 const { storage, cloudinary } = require("./cloudinary/index");
 
-const { con } = require("./connection/connection");
 const session = require("express-session");
+
+mongoose
+  .connect(
+    "mongodb+srv://janakachamith:v2ysmgVeCRr2KE50@cluster0.a88j5ma.mongodb.net/?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log("database Conntected");
+  })
+  .catch((err) => {
+    console.log("Mongodb connection error");
+    console.log(err);
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://janakachamith.herokuapp.com",
+    origin: "http://localhost:3000",
     credentials: true,
     methods: ["GET", "PUT", "POST"],
   })
 );
 app.use(express.static(path.join(__dirname, "/client/build")));
-
+const con = "hello";
 const loginRoutes = require("./routes/Login");
 
 app.use(
@@ -36,8 +52,6 @@ app.use(
   })
 );
 // const storage = multer.diskStorage(storage);
-
-console.log(process.env);
 
 app.use("/api/user", loginRoutes);
 

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { con, connectDB } = require("../connection/connection");
+const User = require("../models/User");
 
 const auth = async (req, res, next) => {
   try {
@@ -7,18 +7,16 @@ const auth = async (req, res, next) => {
     // const token = req.headers.authorization;
     let decodeData = jwt.verify(token, process.env.JWT_SECRET);
     try {
-      con.query(
-        "select email_address, userId from user where userId=? and email_address=?",
-        [decodeData.id.id, decodeData.id.email],
-        async function (err, result) {
-          if (err) {
-            res.status(500).json({ Message: "User Authentication Failed" });
-          }
-          req.userData = await result[0];
-
+      User.findOne({ _id: decodeData.id.id }, async function (err, user) {
+        if (err) {
+          res.status(200).json({ error: "Session over log In " });
+        } else if (user) {
+          req.userData = user.email;
           next();
+        } else {
+          res.status(200).json({ error: "Session over log In " });
         }
-      );
+      });
     } catch (error) {
       res.status(402).json({ error: "User Authentication Failed" });
     }

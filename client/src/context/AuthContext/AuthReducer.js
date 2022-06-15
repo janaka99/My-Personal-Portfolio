@@ -28,7 +28,7 @@ const AuthReducer = (state, action) => {
     case LOGOUT_CALL:
       return {
         ...state,
-        loading: false,
+        loading: true,
       };
     case LOGOUT_SUCCESS:
       return {
