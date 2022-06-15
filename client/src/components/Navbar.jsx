@@ -20,7 +20,7 @@ const Navbar = () => {
 
   const handleLogOut = (e) => {
     logOut();
-    // navigate("/");
+    window.location.reload();
   };
 
   if (!loading) {
@@ -28,7 +28,7 @@ const Navbar = () => {
       <Wrapper>
         <Container>
           <Logo>
-            <Text src={logo} />
+            <Text>Janaka.DEV</Text>
           </Logo>
           <NavLinks>
             <Link>Home</Link>
@@ -97,13 +97,8 @@ const Logo = styled.div`
   height: 100%;
 `;
 
-const Text = styled.img`
-  height: 100%;
-  width: 100%;
-  @media screen and (max-width: 700px) {
-    height: calc(0% + 1vw);
-    width: calc(100% - 10vw);
-  }
+const Text = styled.h2`
+  font-weight: 600;
 `;
 
 const NavLinks = styled.div`
@@ -124,7 +119,7 @@ const Link = styled.a`
   cursor: pointer;
 
   &:hover {
-    color: red;
+    color: rgb(80, 72, 249);
   }
 `;
 

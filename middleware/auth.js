@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
         if (err) {
           res.status(200).json({ error: "Session over log In " });
         } else if (user) {
-          req.userData = user.email;
+          req.userData = { email: user.email, id: user._id };
           next();
         } else {
           res.status(200).json({ error: "Session over log In " });

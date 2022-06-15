@@ -1,90 +1,107 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import SKcard from "../components/SKcard";
 import java from "../assets/Languages/java.png";
 import Title from "../components/Title";
 import { useNavigate } from "react-router-dom";
+import ImageContext from "../context/imageContext/ImageContext";
 
-const SkillSection = () => {
+const SkillSection = ({ languages }) => {
   const navigate = useNavigate();
+
+  const imageContext = useContext(ImageContext);
+
+  const { images, isAuthenticated } = imageContext;
 
   return (
     <Wrapper>
       <Title text1="Skills " text2="& Experience" />
-      <h1 onClick={() => navigate("/add-new-language-or-tool")}>
-        Add New skill
-      </h1>
+      {isAuthenticated ? (
+        <h1 onClick={() => navigate("/add-new-language-or-tool")}>
+          Add New skill
+        </h1>
+      ) : (
+        <></>
+      )}
       <Container>
         <SubSection>
-          <Name>Languages</Name>
+          <Name>Languagess</Name>
           <Cards>
-            <SKcard
-              imgLink={require("../assets/Languages/python.png")}
-              name="Python"
-            />
-            <SKcard
-              imgLink={require("../assets/Languages/java.png")}
-              name="Java"
-            />
-
-            <SKcard
-              imgLink={require("../assets/Languages/Cslash.png")}
-              name="C#"
-            />
-            <SKcard
-              imgLink={require("../assets/Languages/c++.png")}
-              name="C++"
-            />
-            <SKcard
-              imgLink={require("../assets/Languages/javascript.png")}
-              name="C++"
-            />
+            {images ? (
+              images
+                .filter((lng) => lng.skillCategory === "language")
+                .map((item) => {
+                  return (
+                    <SKcard
+                      key={item._id}
+                      imgLink={item.path}
+                      name={item.title}
+                    />
+                  );
+                })
+            ) : (
+              <h1>Hello world</h1>
+            )}
           </Cards>
         </SubSection>
         <SubSection>
           <Name>Database Management Systems</Name>
           <Cards>
-            <SKcard
-              imgLink={require("../assets/dbms/mysql.png")}
-              name="MySQL"
-            />
-            <SKcard
-              imgLink={require("../assets/dbms/mongodb.png")}
-              name="MongoDB"
-            />
-            <SKcard
-              imgLink={require("../assets/dbms/postgresql.png")}
-              name="PostgreSQL"
-            />
+            {images ? (
+              images
+                .filter((lng) => lng.skillCategory === "dbms")
+                .map((item) => {
+                  return (
+                    <SKcard
+                      key={item._id}
+                      imgLink={item.path}
+                      name={item.title}
+                    />
+                  );
+                })
+            ) : (
+              <h1>Hello world</h1>
+            )}
           </Cards>
         </SubSection>
         <SubSection>
           <Name>FrameWorks & Libraries & Technologies</Name>
           <Cards>
-            <SKcard imgLink={require("../assets/LFT/html.png")} name="HTML" />
-            <SKcard imgLink={require("../assets/LFT/css.png")} name="CSS" />
-            <SKcard imgLink={require("../assets/LFT/react.png")} name="React" />
-
-            <SKcard
-              imgLink={require("../assets/LFT/express.png")}
-              name="Express"
-            />
-            <SKcard imgLink={require("../assets/LFT/node.png")} name="Node" />
-            <SKcard imgLink={require("../assets/LFT/css.png")} name="CSS" />
+            {images ? (
+              images
+                .filter((lng) => lng.skillCategory === "framework")
+                .map((item) => {
+                  return (
+                    <SKcard
+                      key={item._id}
+                      imgLink={item.path}
+                      name={item.title}
+                    />
+                  );
+                })
+            ) : (
+              <h1>Hello world</h1>
+            )}
           </Cards>
         </SubSection>
         <SubSection>
           <Name>Other tools</Name>
           <Cards>
-            <SKcard
-              imgLink={require("../assets/tools/figma.png")}
-              name="Figma"
-            />
-            <SKcard imgLink={require("../assets/tools/git.png")} name="Git" />
-            <SKcard
-              imgLink={require("../assets/tools/wordpress.png")}
-              name="Wordpress"
-            />
+            {images ? (
+              images
+                .filter((lng) => lng.skillCategory === "tool")
+                .map((item) => {
+                  return (
+                    <SKcard
+                      key={item._id}
+                      imgLink={item.path}
+                      name={item.title}
+                    />
+                  );
+                })
+            ) : (
+              <h1>Hello world</h1>
+            )}
           </Cards>
         </SubSection>
       </Container>

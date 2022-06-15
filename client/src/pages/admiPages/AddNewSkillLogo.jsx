@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ImageContext from "../../context/imageContext/ImageContext";
 import { useNavigate } from "react-router-dom";
 
-const SkillAdmin = () => {
+const SkillAdmin = ({}) => {
   const [file, setFile] = useState(null);
   const title = useRef();
   const description = useRef();
@@ -14,10 +14,10 @@ const SkillAdmin = () => {
 
   const imageContext = useContext(ImageContext);
 
-  const { addProject, deleteProject, Projects, loadLanguages } = imageContext;
+  const { addImage, deleteImage, images, loadImage } = imageContext;
 
   useEffect(() => {
-    loadLanguages();
+    loadImage("languages");
   }, []);
 
   const submitHandler = (e) => {
@@ -29,8 +29,10 @@ const SkillAdmin = () => {
       const newTitle = JSON.stringify({
         title: title.current.value,
         description: description.current.value,
-        category: category.current.value,
+        skillCategory: category.current.value,
+        type: "languages",
         url: "None",
+        site_url: "none",
       });
       console.log(newTitle);
       const data = new FormData();
@@ -38,7 +40,7 @@ const SkillAdmin = () => {
       data.append("projectData", newTitle);
       console.log(data);
       try {
-        addProject(data);
+        addImage(data);
         console.log("Image added");
       } catch (error) {
         console.log(error);
@@ -50,7 +52,7 @@ const SkillAdmin = () => {
     const data = {
       id: item,
     };
-    deleteProject(data);
+    deleteImage(data);
   }
 
   return (
@@ -72,9 +74,9 @@ const SkillAdmin = () => {
                 <label htmlFor="">Select Category</label>
                 <select ref={category}>
                   <option value="dbms">dbms</option>
-                  <option value="languages">languages</option>
-                  <option value="frameworks">frameworks</option>
-                  <option value="tools">tools</option>
+                  <option value="language">languages</option>
+                  <option value="framework">frameworks</option>
+                  <option value="tool">tools</option>
                 </select>
               </Name>
               <Url>
@@ -93,23 +95,27 @@ const SkillAdmin = () => {
         <RightBox>
           <h2>Edit Your Skills</h2>
           <Table>
-            {Projects.map((item) => {
-              return (
-                <Row>
-                  <Title>{item.title}</Title>
-                  <EditButton>Edit</EditButton>
-                  <DeleteButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      deleteItem(item);
-                    }}
-                  >
-                    Delete
-                  </DeleteButton>
-                  <HideButton>Hide</HideButton>
-                </Row>
-              );
-            })}
+            {images ? (
+              images.map((item) => {
+                return (
+                  <Row key={item._id}>
+                    <Title>{item.title}</Title>
+                    <EditButton>Edit</EditButton>
+                    <DeleteButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteItem(item);
+                      }}
+                    >
+                      Delete
+                    </DeleteButton>
+                    <HideButton>Hide</HideButton>
+                  </Row>
+                );
+              })
+            ) : (
+              <h2>Hellow</h2>
+            )}
           </Table>
         </RightBox>
       </Wrapper>

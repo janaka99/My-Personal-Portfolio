@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new mongoose.Schema(
   {
     url: {
-      String,
+      type: String,
       required: true,
     },
     category: {
-      String,
+      type: String,
       required: true,
-      enum: ["projects", "skills"],
+      enum: ["projects", "skills", "languages"],
     },
     title: {
-      String,
+      type: String,
       required: true,
     },
     userId: {
@@ -22,16 +22,25 @@ const ProjectSchema = new mongoose.Schema(
       required: true,
     },
     path: {
+      type: String,
       required: true,
-      String,
+    },
+    hashTags: {
+      type: Array,
+      default: [],
     },
     description: {
-      String,
+      type: String,
       required: true,
     },
     site_url: {
-      String,
+      type: String,
       required: true,
+    },
+    skillCategory: {
+      type: String,
+      required: true,
+      enum: ["dbms", "language", "framework", "tool", "none"],
     },
   },
   { timestamps: true }

@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const SkillCard = ({ imgLink, title }) => {
+const SkillCard = ({ imgLink, title, id }) => {
   return (
     <Wrapper>
       <Container>
-        <Image imgLink={imgLink}></Image>
+        <div>
+          <Image imgLink={imgLink}></Image>
+        </div>
         <Title>{title}</Title>
       </Container>
     </Wrapper>
@@ -21,6 +23,13 @@ const Wrapper = styled.div`
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  border-radius: 15%;
+
+  overflow: hidden;
+  div {
+    border-radius: 15%;
+    overflow: hidden;
+  }
 `;
 const Image = styled.div`
   height: 190px;
@@ -28,7 +37,11 @@ const Image = styled.div`
   width: 190px;
   background-size: cover;
   background-repeat: no-repeat;
-  border-radius: 15%;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: ease-in-out 0.5s;
+  }
 `;
 const Title = styled.div`
   height: 50px;
@@ -37,4 +50,5 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;

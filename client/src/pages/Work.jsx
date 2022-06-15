@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Title from "../components/Title";
 import WorkCard from "../components/WorkCard";
 import { useNavigate } from "react-router-dom";
+import ImageContext from "../context/imageContext/ImageContext";
 
 const Work = () => {
   const navigate = useNavigate();
+  const imageContext = useContext(ImageContext);
 
+  const { images, isAuthenticated } = imageContext;
   return (
     <Wrapper>
       <Title text1="Projects " text2="I Have Done" />
-      <h1 onClick={() => navigate("/add-new-work")}>Add New Work</h1>
+      {isAuthenticated ? (
+        <h1 onClick={() => navigate("/add-new-work")}>Add New Work</h1>
+      ) : (
+        <></>
+      )}
       <Container>
         <Topics>
           <Button>UI/UX</Button>
@@ -22,26 +29,23 @@ const Work = () => {
           <Button>All</Button>
         </Topics>
         <MyWork>
-          <WorkCard
-            imgLink="https://images.unsplash.com/photo-1647804212597-15bc7c55c257?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-            title="Modern UX/UI Website"
-            desc="A Moders UX/UI portfolio website"
-          />
-          <WorkCard
-            imgLink="https://images.unsplash.com/photo-1471897488648-5eae4ac6686b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-            title="Resturant Web App Project"
-            desc="A Modern Resturant Web App Project"
-          />
-          <WorkCard
-            imgLink="https://images.unsplash.com/photo-1647862892084-16efb44a1c18?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-            title="Cool Mobile App design"
-            desc="Mobile App for ICT students"
-          />
-          <WorkCard
-            imgLink="https://images.unsplash.com/photo-1647835895984-e1b5ddb1cbf6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-            title="Coca Cola Company Web App"
-            desc="Beautifull Drinking Website"
-          />
+          {images ? (
+            images
+              .filter((lng) => lng.category === "projects")
+              .map((item) => {
+                return (
+                  <WorkCard
+                    key={item._id}
+                    imgLink={item.path}
+                    title={item.title}
+                    desc={item.description}
+                    urlLink={item.site_url}
+                  />
+                );
+              })
+          ) : (
+            <h1>Hello world</h1>
+          )}
         </MyWork>
       </Container>
     </Wrapper>

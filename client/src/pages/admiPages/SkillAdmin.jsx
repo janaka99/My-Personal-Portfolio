@@ -6,15 +6,15 @@ import ImageContext from "../../context/imageContext/ImageContext";
 const SkillAdmin = () => {
   const [file, setFile] = useState(null);
   const title = useRef();
-
-  const [skills, setskills] = useState();
+  const description = useRef();
 
   const imageContext = useContext(ImageContext);
 
   const { addImage, deleteImage, loadImage, images } = imageContext;
 
   useEffect(() => {
-    loadImage();
+    loadImage("skills");
+    console.log(images);
   }, []);
 
   const submitHandler = (e) => {
@@ -23,14 +23,17 @@ const SkillAdmin = () => {
       console.log("File is empty");
     } else {
       console.log("File size is", file.size);
-      const newTitle = JSON.stringify({
+      const newData = JSON.stringify({
         title: title.current.value,
         type: "skills",
+        description: description.current.value,
+        site_url: "none",
+        skillCategory: "none",
       });
-      console.log(newTitle);
+      console.log(newData);
       const data = new FormData();
       data.append("file", file);
-      data.append("titleData", newTitle);
+      data.append("projectData", newData);
       console.log(data);
       try {
         addImage(data);
@@ -59,6 +62,11 @@ const SkillAdmin = () => {
                 <label htmlFor="">Enter title</label>
                 <input type="text" ref={title} />
               </Name>
+              <Name>
+                <label htmlFor="">Enter description</label>
+                <input type="text" ref={description} />
+              </Name>
+
               <Url>
                 <label htmlFor="">Insert Image</label>
                 <input
@@ -75,23 +83,27 @@ const SkillAdmin = () => {
         <RightBox>
           <h2>Edit Your Skills</h2>
           <Table>
-            {images.map((item) => {
-              return (
-                <Row>
-                  <Title>{item.title}</Title>
-                  <EditButton>Edit</EditButton>
-                  <DeleteButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      deleteItem(item);
-                    }}
-                  >
-                    Delete
-                  </DeleteButton>
-                  <HideButton>Hide</HideButton>
-                </Row>
-              );
-            })}
+            {images ? (
+              images.map((item) => {
+                return (
+                  <Row key={item._id}>
+                    <Title>{item.title}</Title>
+                    <EditButton>Edit</EditButton>
+                    <DeleteButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteItem(item);
+                      }}
+                    >
+                      Delete
+                    </DeleteButton>
+                    <HideButton>Hide</HideButton>
+                  </Row>
+                );
+              })
+            ) : (
+              <h2>Hellow</h2>
+            )}
           </Table>
         </RightBox>
       </Wrapper>

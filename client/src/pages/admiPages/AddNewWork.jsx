@@ -9,15 +9,17 @@ const SkillAdmin = () => {
   const title = useRef();
   const description = useRef();
   const siteUrl = useRef();
+  const hashtags = useRef();
+
   const navigate = useNavigate();
   const [skills, setskills] = useState();
 
   const imageContext = useContext(ImageContext);
 
-  const { addProject, deleteProject, Projects, loadProjects } = imageContext;
+  const { addImage, deleteImage, images, loadImage } = imageContext;
 
   useEffect(() => {
-    loadProjects();
+    loadImage("projects");
   }, []);
 
   const submitHandler = (e) => {
@@ -26,19 +28,22 @@ const SkillAdmin = () => {
       console.log("File is empty");
     } else {
       console.log("File size is", file.size);
-      const newTitle = JSON.stringify({
+      const newData = JSON.stringify({
         title: title.current.value,
         description: description.current.value,
-        url: siteUrl.current.value,
-        category: "projects",
+        site_url: siteUrl.current.value,
+        type: "projects",
+        skillCategory: "none",
+        hashTags: hashtags.current.value,
       });
-      console.log(newTitle);
+      console.log(newData);
       const data = new FormData();
       data.append("file", file);
-      data.append("projectData", newTitle);
+      data.append("projectData", newData);
       console.log(data);
       try {
-        addProject(data);
+        addImage(data);
+
         console.log("Image added");
       } catch (error) {
         console.log(error);
@@ -50,7 +55,7 @@ const SkillAdmin = () => {
     const data = {
       id: item,
     };
-    deleteProject(data);
+    deleteImage(data);
   }
 
   return (
@@ -72,6 +77,10 @@ const SkillAdmin = () => {
                 <label htmlFor="">Enter Site Url</label>
                 <input type="text" ref={siteUrl} />
               </Name>
+              <Name>
+                <label htmlFor="">Enter hashtags</label>
+                <input type="text" ref={hashtags} />
+              </Name>
               <Url>
                 <label htmlFor="">Insert Image</label>
                 <input
@@ -88,23 +97,27 @@ const SkillAdmin = () => {
         <RightBox>
           <h2>Edit Your Skills</h2>
           <Table>
-            {Projects.map((item) => {
-              return (
-                <Row>
-                  <Title>{item.title}</Title>
-                  <EditButton>Edit</EditButton>
-                  <DeleteButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      deleteItem(item);
-                    }}
-                  >
-                    Delete
-                  </DeleteButton>
-                  <HideButton>Hide</HideButton>
-                </Row>
-              );
-            })}
+            {images ? (
+              images.map((item) => {
+                return (
+                  <Row key={item._id}>
+                    <Title>{item.title}</Title>
+                    <EditButton>Edit</EditButton>
+                    <DeleteButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteItem(item);
+                      }}
+                    >
+                      Delete
+                    </DeleteButton>
+                    <HideButton>Hide</HideButton>
+                  </Row>
+                );
+              })
+            ) : (
+              <h2>Hellow</h2>
+            )}
           </Table>
         </RightBox>
       </Wrapper>

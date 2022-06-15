@@ -3,7 +3,6 @@ import styled from "styled-components";
 import SkillCard from "../components/SkillCard";
 import Title from "../components/Title";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import ImageContext from "../context/imageContext/ImageContext";
 
 const Skills = () => {
@@ -11,43 +10,34 @@ const Skills = () => {
 
   const imageContext = useContext(ImageContext);
 
-  const { images, loadImage } = imageContext;
-
-  useEffect(() => {
-    loadImage();
-  }, []);
-
+  const { images, isAuthenticated } = imageContext;
   return (
     <Wrapper>
-      <Title text1="What " text2="I'm Do" />
-      <AddNewSkill onClick={() => navigate("/add-new-skill")}>
-        Add New Skill
-      </AddNewSkill>
-      {images ? (
-        <Container>
-          {images.map((item) => {
-            return (
-              <SkillCard
-                key={item.imageId}
-                title={item.title}
-                imgLink={item.path}
-              />
-            );
-          })}
-        </Container>
+      <Title text1="What " text2="I Do" />
+      {isAuthenticated ? (
+        <AddNewSkill onClick={() => navigate("/add-new-skill")}>
+          Add New Skill
+        </AddNewSkill>
       ) : (
-        <Container>
-          <SkillCard
-            title="Frontend Development"
-            imgLink="https://images.unsplash.com/photo-1647829815927-72e52562148a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-          />
-
-          <SkillCard
-            title="MERN Stack"
-            imgLink="https://images.unsplash.com/photo-1586227740560-8cf2732c1531?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
-          />
-        </Container>
+        <></>
       )}
+      <Container>
+        {images ? (
+          images
+            .filter((lng) => lng.category === "skills")
+            .map((item) => {
+              return (
+                <SkillCard
+                  key={item._id}
+                  title={item.title}
+                  imgLink={item.path}
+                />
+              );
+            })
+        ) : (
+          <h1>Hello world</h1>
+        )}
+      </Container>
     </Wrapper>
   );
 };

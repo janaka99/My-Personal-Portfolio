@@ -26,8 +26,8 @@ const ImageState = (props) => {
   //add image
 
   const API = axios.create({
-    // baseURL: "http://localhost:5000",
-    baseURL: "https://janakachamith.herokuapp.com",
+    baseURL: "http://localhost:5000",
+    // baseURL: "https://janakachamith.herokuapp.com",
     allowedHeaders: ["Content-Type", "authorization"],
   });
   API.interceptors.request.use((req) => {
@@ -41,17 +41,16 @@ const ImageState = (props) => {
 
   const deleteImage = (data) => {
     try {
-      API.post("/api/deleteItem", data).then((res) => {
+      API.post("/api/image/deleteItem", data).then((res) => {
         if (res.data.error) {
           dispatch({
             type: Upload_Failed,
             payload: res.data,
           });
         } else {
-          loadImage();
           dispatch({
             type: Delete_Image,
-            payload: res.data,
+            payload: res.data.products,
           });
         }
       });
@@ -66,7 +65,7 @@ const ImageState = (props) => {
   //add image
 
   const addImage = (data) => {
-    API.post("/api/upload", data)
+    API.post("/api/image/add-skill", data)
       .then((res) => {
         if (res.data.error) {
           dispatch({
@@ -76,7 +75,7 @@ const ImageState = (props) => {
         } else {
           dispatch({
             type: Add_Image,
-            payload: res.data,
+            payload: res.data.products,
           });
         }
       })
@@ -90,8 +89,8 @@ const ImageState = (props) => {
 
   //add image
 
-  const loadImage = () => {
-    API.get("/api/loadSkills").then((res) => {
+  const loadImage = (category) => {
+    API.get(`/api/image/loadSkills/${category}`).then((res) => {
       if (res.data.error) {
         dispatch({
           type: Upload_Failed,
@@ -100,7 +99,7 @@ const ImageState = (props) => {
       } else {
         dispatch({
           type: Load_Image,
-          payload: res.data,
+          payload: res.data.products,
         });
       }
     });
@@ -110,7 +109,7 @@ const ImageState = (props) => {
 
   const addProject = (data) => {
     try {
-      API.post("/api/addProject", data).then((res) => {
+      API.post("/api/image/addProject", data).then((res) => {
         if (res.data.error) {
           dispatch({
             type: Upload_Failed,
@@ -135,7 +134,7 @@ const ImageState = (props) => {
 
   const deleteProject = (data) => {
     try {
-      API.post("/api/deleteProject", data)
+      API.post("/api/image/deleteProject", data)
         .then((res) => {
           if (res.data.error) {
             dispatch({
@@ -168,7 +167,7 @@ const ImageState = (props) => {
 
   const loadProjects = () => {
     try {
-      API.get("/api/loadProjects").then((res) => {
+      API.get("/api/image/loadProjects").then((res) => {
         if (res.data.error) {
           dispatch({
             type: Upload_Failed,
@@ -192,7 +191,7 @@ const ImageState = (props) => {
   // load language, dbms, frameworks
   const loadLanguages = () => {
     try {
-      API.get("/api/loadLanguage").then((res) => {
+      API.get("/api/image/loadLanguage").then((res) => {
         if (res.data.error) {
           dispatch({
             type: Upload_Failed,
