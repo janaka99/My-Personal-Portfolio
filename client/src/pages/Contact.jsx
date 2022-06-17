@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useRef } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { AiFillPhone } from "react-icons/ai";
 import styled from "styled-components";
 import Title from "../components/Title";
+import axios from "axios";
 
 const Contact = () => {
+  const emailBody = useRef();
+
+  const handleContact = (e) => {
+    e.preventDefault();
+    const data = { message: emailBody.current.value };
+    axios.post("https://janakachamith.herokuapp.com/api/contact/", data);
+  };
+
   return (
     <Container>
       <Title text1="Contact" text2=" Me" />
 
-      <Wrapper>
+      <Wrapper onSubmit={handleContact}>
         <EmailDetails>
           <Button>
             <Icon>
@@ -28,11 +37,15 @@ const Contact = () => {
           <FormContainer>
             <InputTab placeholder="Your Name" />
             <InputTab placeholder="Your Email" />
-            <MessageTab placeholder="Your Message" column="45" />
+            <MessageTab
+              ref={emailBody}
+              placeholder="Your Message"
+              column="45"
+            />
           </FormContainer>
         </ContactForm>
         <SendMessage>
-          <div>Send Message</div>
+          <button type="submit">Send Message</button>
         </SendMessage>
       </Wrapper>
     </Container>
@@ -46,7 +59,7 @@ const Container = styled.div`
   width: 100%;
   padding: 50px 0;
 `;
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   width: 85%;
   max-width: 1440px;
   margin: 0 auto;
@@ -125,7 +138,7 @@ const SendMessage = styled.div`
   display: flex;
   justify-content: center;
 
-  div {
+  button {
     background-color: white;
 
     border-radius: 4px;

@@ -26,8 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    // origin: "http://localhost:3000",
-    origin: "https://janakachamith.herokuapp.com",
+    origin: "http://localhost:3000",
+    origin: process.env.ORIGIN_URL,
     credentials: true,
     methods: ["GET", "PUT", "POST"],
   })
@@ -36,6 +36,7 @@ app.use(express.static(path.join(__dirname, "/client/build")));
 const con = "hello";
 const loginRoutes = require("./routes/Login");
 const imageRoutes = require("./routes/Image");
+const contactRoutes = require("./routes/contact");
 
 app.use(
   session({
@@ -50,6 +51,8 @@ app.use(
 // const storage = multer.diskStorage(storage);
 app.use("/api/user", loginRoutes);
 app.use("/api/image", imageRoutes);
+app.use("/api/contact", contactRoutes);
+console.log("work2");
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/client/build", "index.html"));
