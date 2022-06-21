@@ -77,16 +77,27 @@ const SubContainer = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   display: flex;
+  @media screen and (max-width: 644px) {
+    flex-direction: column-reverse;
+    width: 95%;
+  }
 `;
 
 const Wrapper = styled.form`
   width: 50%;
+  @media screen and (max-width: 644px) {
+    width: 95%;
+    margin: 0 auto;
+  }
 `;
 const Description = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  @media screen and (max-width: 644px) {
+    width: 95%;
+  }
 `;
 const Title = styled.div`
   font-size: 50px;
@@ -97,9 +108,6 @@ const Title = styled.div`
   @media screen and (max-width: 1024px) {
     width: 100%;
   }
-  @media screen and (max-width: 1024px) {
-    text-align: center;
-  }
 `;
 const Desc = styled.div`
   width: 100%;
@@ -107,10 +115,10 @@ const Desc = styled.div`
 const EmailDetails = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
+
   width: 95%;
   max-width: 700px;
-  margin: 0 auto;
+  margin: 50px auto;
   @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -119,10 +127,10 @@ const EmailDetails = styled.div`
 
 const Button = styled.div`
   display: flex;
-  padding: 10px 15px;
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
   margin-top: 50px;
+  margin-bottom: 50px;
   align-items: center;
   background-color: #1c1c1c;
   cursor: pointer;

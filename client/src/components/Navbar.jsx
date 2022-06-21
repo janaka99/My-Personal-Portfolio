@@ -59,6 +59,11 @@ const Navbar = () => {
                   <Link>Work</Link>
                   <Link>Skills</Link>
                   <Link>Contact</Link>
+                  {isAuthenticated ? (
+                    <Link onClick={handleLogOut}>Log Out</Link>
+                  ) : (
+                    <></>
+                  )}
                 </BurgerNav>
               </Burger>
             )}
@@ -135,6 +140,8 @@ const Link = styled.a`
 
 const HamBurgerMenu = styled.div`
   display: none;
+  color: #8b8989;
+  background-color: #1d1d1d;
   @media screen and (max-width: 900px) {
     display: unset;
   }
