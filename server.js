@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     // origin: "http://localhost:3000",
-    origin: "https://janakachamith.herokuapp.com",
+    origin: "http://janakachamith.herokuapp.com",
     credentials: true,
     methods: ["GET", "PUT", "POST"],
   })
