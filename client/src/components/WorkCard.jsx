@@ -29,6 +29,7 @@ export default WorkCard;
 const Wrapper = styled.div`
   width: 280px;
   height: fit-content;
+  color: black;
   background-color: #e1eaee;
   border-radius: 8px;
   overflow: hidden;
@@ -40,16 +41,18 @@ const Wrapper = styled.div`
 `;
 const Container = styled.div`
   width: 280px;
+  margin: 5px auto;
+  overflow: hidden;
 `;
 const ImageSec = styled.div`
-  width: 100%;
-
+  width: 95%;
+  margin: 0 auto;
   height: 150px;
   overflow: hidden;
 `;
 const Image = styled.div`
-  width: 95%;
-  margin: 5px auto;
+  width: 100%;
+  margin: 0 auto;
   height: 150px;
   background-image: url(${(props) => props.imgLink});
   background-position: center;
@@ -63,13 +66,15 @@ const Image = styled.div`
 const TextSec = styled.div`
   margin: 0 20px 20px 20px;
   text-align: center;
-
   div {
     font-weight: 600;
     margin-bottom: 12px;
     font-size: 16px;
+    color: black;
   }
   span {
+    color: black;
+
     font-weight: 300;
     font-size: 15px;
     font-family: sans-serif;

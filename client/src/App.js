@@ -10,6 +10,7 @@ import AuthContext from "./context/AuthContext/AuthContext";
 import { useContext } from "react";
 import ErrorPage from "./pages/404";
 import LoadingScreen from "./pages/LoadingScreen";
+import styled from "styled-components";
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -17,7 +18,7 @@ function App() {
   const { isAuthenticated, loading } = authContext;
 
   return (
-    <div className="App">
+    <Container className="App">
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -46,8 +47,15 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </Container>
   );
 }
 
 export default App;
+
+const Container = styled.div`
+  /* background-color: rgb(88, 213, 211); */
+  color: white;
+
+  width: 100%;
+`;

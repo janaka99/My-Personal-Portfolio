@@ -1,11 +1,14 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
+import { useScroll } from "../pages/admiPages/middlewares/Scroll";
+import { TitleAnimation } from "./aimations/Animation";
 
-const Title = ({ text1, text2 }) => {
+const Title = ({ text1, text2, animateControls }) => {
   return (
     <Container>
       <Text>
-        <span style={{ color: "rgb(80,72,249)" }}>{text1}</span>
+        <span style={{ color: " #58d5d3" }}>{text1}</span>
         {text2}
       </Text>
     </Container>
@@ -19,7 +22,7 @@ const Container = styled.div`
   margin: 0 auto;
   margin: 50px auto;
 `;
-const Text = styled.div`
+const Text = styled(motion.div)`
   font-size: 45px;
   text-align: center;
   font-weight: 500;

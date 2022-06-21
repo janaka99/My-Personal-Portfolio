@@ -26,12 +26,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
     origin: process.env.ORIGIN_URL,
     credentials: true,
     methods: ["GET", "PUT", "POST"],
   })
 );
+
 app.use(express.static(path.join(__dirname, "/client/build")));
 const con = "hello";
 const loginRoutes = require("./routes/Login");

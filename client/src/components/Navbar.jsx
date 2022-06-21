@@ -28,7 +28,9 @@ const Navbar = () => {
       <Wrapper>
         <Container>
           <Logo>
-            <Text>Janaka.DEV</Text>
+            <Text>
+              Janaka.<span>DEV</span>
+            </Text>
           </Logo>
           <NavLinks>
             <Link>Home</Link>
@@ -74,7 +76,12 @@ export default Navbar;
 const Wrapper = styled.div`
   width: 100%;
   height: 80px;
-  background-color: white;
+  background: rgb(25, 25, 25);
+  background: linear-gradient(
+    90deg,
+    rgba(25, 25, 25, 1) 0%,
+    rgba(61, 61, 61, 1) 100%
+  );
   position: relative;
   @media screen and (max-width: 700px) {
     height: calc(100% - 100vw);
@@ -99,6 +106,9 @@ const Logo = styled.div`
 
 const Text = styled.h2`
   font-weight: 600;
+  span {
+    color: #58d5d3;
+  }
 `;
 
 const NavLinks = styled.div`
@@ -119,7 +129,7 @@ const Link = styled.a`
   cursor: pointer;
 
   &:hover {
-    color: rgb(80, 72, 249);
+    color: #58d5d3;
   }
 `;
 

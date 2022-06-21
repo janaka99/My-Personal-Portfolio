@@ -17,24 +17,24 @@ const SkillCard = ({ imgLink, title, id }) => {
 export default SkillCard;
 
 const Wrapper = styled.div`
-  width: 190px;
-  height: 240px;
+  width: 90%;
+  height: 300px;
+  padding: 10px;
 `;
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 15%;
-
   overflow: hidden;
   div {
+    height: 90%;
     border-radius: 15%;
     overflow: hidden;
   }
 `;
 const Image = styled.div`
-  height: 190px;
+  height: 100%;
   background-image: url(${(props) => props.imgLink});
-  width: 190px;
+  width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
 

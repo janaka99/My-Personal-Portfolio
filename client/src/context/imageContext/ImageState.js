@@ -28,7 +28,7 @@ const ImageState = (props) => {
   const API = axios.create({
     // baseURL: "http://localhost:5000",
     baseURL: "https://janakachamith.herokuapp.com",
-    allowedHeaders: ["Content-Type", "authorization"],
+    allowedHeaders: ["authorization"],
   });
   API.interceptors.request.use((req) => {
     if (localStorage.getItem("user")) {
@@ -88,6 +88,29 @@ const ImageState = (props) => {
   };
 
   //add image
+
+  const updateImage = (data) => {
+    API.post("/api/image/update", data)
+      .then((res) => {
+        if (res.data.error) {
+          dispatch({
+            type: Upload_Failed,
+            payload: res.data,
+          });
+        } else {
+          dispatch({
+            type: Add_Image,
+            payload: res.data.products,
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: Upload_Failed,
+          payload: err.message,
+        });
+      });
+  };
 
   const loadImage = (category) => {
     API.get(`/api/image/loadSkills/${category}`).then((res) => {
@@ -220,6 +243,7 @@ const ImageState = (props) => {
         error: state.error,
         message: state.message,
         addImage,
+        updateImage,
         loadImage,
         deleteImage,
         addProject,

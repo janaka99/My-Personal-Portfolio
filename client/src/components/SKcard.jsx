@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   width: 100px;
   height: 100px;
-  background-color: #c4dbff;
+  background-color: #1c1c1c;
   border-radius: 50%;
   display: flex;
   justify-content: center;

@@ -5,11 +5,12 @@ const { storage, cloudinary } = require("../cloudinary/index");
 const multer = require("multer");
 const { expressError } = require("../middleware/ExpressError");
 
-const upload = multer({ storage: storage });
-
-router.post("/add-skill", auth, upload.single("file"), async (req, res) => {
+const upload = multer({ storage: storage }).single("file");
+// upload.single("file"),
+router.post("/add-skill", auth, upload, async (req, res) => {
   try {
     const data = await JSON.parse(req.body.projectData);
+    console.log(req.file);
     const input = new Project({
       url: req.file.filename,
       category: data.type,
@@ -28,17 +29,21 @@ router.post("/add-skill", auth, upload.single("file"), async (req, res) => {
           if (products) {
             res.status(200).json({ products });
           } else {
+            cloudinary.uploader.destroy(req.file.filename);
             console.log("not found any images");
             res.status(200).json({ error: "Please add new Skills" });
           }
         });
       } catch (err) {
+        cloudinary.uploader.destroy(req.file.filename);
         res.status(200).json({ error: "Please add new Skills" });
       }
     } else {
+      cloudinary.uploader.destroy(req.file.filename);
       res.status(200).json({ error: "error" });
     }
   } catch (error) {
+    cloudinary.uploader.destroy(req.file.filename);
     console.log(error);
     res.status(200).json({ error: "errorMessage" });
   }
@@ -115,6 +120,96 @@ router.post("/deleteItem/", auth, async (req, res) => {
     console.log(err);
   }
   //
+});
+
+router.post("/update", upload, async (req, res) => {
+  try {
+    if (req.body.imageData) {
+      const data = await req.body.imageData;
+
+      Project.findByIdAndUpdate(data.id, data).exec(function (err, result) {
+        if (result) {
+          Project.find({ category: data.category }).exec(async function (
+            err,
+            products
+          ) {
+            if (products) {
+              res.status(200).json({ products });
+            } else {
+              res.status(200).json({ error: "Please add new Skills" });
+            }
+          });
+        } else {
+          console.log(err);
+          res.status(200).json({ error: "Update failed" });
+        }
+      });
+    } else if (1 === 1) {
+      try {
+        console.log("hehe work1");
+        const data = JSON.parse(req.body.projectupdateData);
+        console.log(data.url);
+        console.log(req.file.filename);
+        console.log("hehe work2");
+
+        const UpdatedProject = {
+          title: data.title,
+          type: data.type,
+          description: data.description,
+          site_url: data.site_url,
+          hashtags: data.hashTags,
+          id: data.id,
+          category: data.category,
+          url: req.file.filename,
+          path: req.file.path,
+        };
+        console.log("hehe6");
+
+        Project.findByIdAndUpdate(
+          data.id,
+          UpdatedProject,
+          async (err, result) => {
+            if (result) {
+              await cloudinary.uploader.destroy(result.url);
+
+              Project.find({ category: data.category }).exec(async function (
+                err,
+                products
+              ) {
+                if (products) {
+                  console.log("hehe2");
+
+                  res.status(200).json({ products });
+                } else {
+                  console.log("hehe3");
+
+                  console.log("not found any images");
+                  res.status(200).json({ error: "Please add new Skills" });
+                }
+              });
+            } else {
+              console.log("hehe4");
+              cloudinary.uploader.destroy(req.file.filename);
+              res.status(200).json({ error: "Update failed" });
+            }
+          }
+        );
+      } catch (error) {
+        console.log("hehe5");
+
+        await cloudinary.uploader.destroy(req.file.filename);
+        res.status(500).json({ error: "Update Failed" });
+      }
+    } else {
+      console.log("Upload failed");
+
+      await cloudinary.uploader.destroy(req.file.filename);
+      res.status(200).json({ error: "Update failed" });
+    }
+  } catch (error) {
+    console.log("Upload failed ss");
+    res.status(200).json({ error: "Update failed" });
+  }
 });
 
 module.exports = router;

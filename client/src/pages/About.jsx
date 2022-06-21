@@ -1,42 +1,34 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import Me from "../assets/me.jpg";
 import ResumeBlack from "../assets/resumeBlack.png";
+import { HomePageHeaderAnimation } from "../components/aimations/Animation";
 import Title from "../components/Title";
+import { useScroll } from "./admiPages/middlewares/Scroll";
 
 const About = () => {
+  const [element, controls] = useScroll();
+
   return (
-    <Container>
-      <Title text1="About " text2="Me" />
+    <Container ref={element}>
       <Wrapper>
-        <Text>
-          <Desc>
+        <TextWrapper>
+          <AboutTitle>Who am i</AboutTitle>
+          <TextContainer>
             I am a self-taught, as well as bootcamp graduate, full-stack
             developer, eager to keep on learning. I am passionate about creating
             innovative solutions aiming for smooth user experiences while
-            keeping a high functionality and paying attention to details. I love
-            organization and structure and therefore put a high emphasis on
-            clean, elegant and efficient code with a mobile-first approach to
-            ensure responsive design
-          </Desc>
-        </Text>
-        <ImageSec>
-          <ImgContainer>
-            <Image></Image>
-          </ImgContainer>
-          <Address>
-            <div>Nuwaraeliya, Walapane</div>
-          </Address>
-          <ResumeButton>
-            <span>Resume</span>
-            <img src={ResumeBlack} />
-          </ResumeButton>
-          <ContactButton>
-            {" "}
-            <span>Contact Me</span>
-            <img src={ResumeBlack} />
-          </ContactButton>
-        </ImageSec>
+            keeping a high functionality and paying attention to every small
+            details. I love organization and structure and therefore put a high
+            emphasis on clean, elegant and efficient code with a beauriful ui
+            with responsive design.
+          </TextContainer>
+          <Resume>
+            <button>Resume</button>
+          </Resume>
+        </TextWrapper>
+        <Image></Image>
       </Wrapper>
     </Container>
   );
@@ -47,150 +39,81 @@ export default About;
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
-  background-color: rgb(80, 72, 249, 0.1);
-  padding: 50px 0;
+  background: rgb(25, 25, 25);
+  /* height: 800px; */
+  padding-top: 50px;
 `;
 const Wrapper = styled.div`
-  width: 85%;
+  width: 100%;
   max-width: 1440px;
-
   margin: 0 auto;
   display: flex;
-
+  height: 500px;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 820px) {
+  @media screen and (max-width: 640px) {
     flex-direction: column;
-    padding-bottom: 50px;
+    /* padding-bottom: 50px; */
+    height: fit-content;
   }
   @media screen and (max-width: 768px) {
     width: 95%;
   }
 `;
-const Text = styled.div`
-  width: 70%;
-  margin-right: 20px;
-  @media screen and (max-width: 820px) {
+const TextWrapper = styled.div`
+  width: 50%;
+  height: 100%;
+  /* background-color: #f7f5c9; */
+  background-color: #c4b18a;
+  @media screen and (max-width: 640px) {
     width: 100%;
+    padding-bottom: 50px;
   }
 `;
-const Desc = styled.div`
-  width: 100%;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  word-spacing: 5px;
-  text-align: justify;
+const Image = styled.div`
+  width: 50%;
+  height: 100%;
+  background-image: url("https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
-const ImageSec = styled.div`
-  width: 30%;
+
+const AboutTitle = styled(motion.div)`
+  font-size: 50px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  color: black;
+`;
+const TextContainer = styled.div`
+  width: 80%;
+  color: black;
+  margin: 0 auto;
+  font-size: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
-  @media screen and (max-width: 820px) {
-    margin-top: 50px;
-    width: 100%;
-    align-items: center;
-  }
-`;
-
-const ImgContainer = styled.div`
-  height: 200px;
-  width: 200px;
-  overflow: hidden;
-  border-radius: 15%;
-`;
-const Image = styled.div`
-  height: 100%;
-  width: 100%;
-  background-image: url(${Me});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: all 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.1);
-    transition: all 0.3s ease-in-out;
-  }
-`;
-const Address = styled.div`
-  margin: 20px auto;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
-  div {
-    text-align: center;
-    width: 200px;
+  @media screen and (max-width: 1024px) {
+    font-size: calc(1% + 2vw);
   }
   @media screen and (max-width: 820px) {
-    justify-content: center;
+    /* align-items: center; */
   }
 `;
-const ResumeButton = styled.div`
-  height: 50px;
-  width: 200px;
-  border-radius: 4px;
-  border: 1px solid black;
+
+const Resume = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  transition: 0.3s all ease-in-out;
-
-  img {
-    height: 70%;
-    margin-right: 15px;
-  }
-  span {
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 15px;
-    transition: 0.3s all ease-in-out;
-  }
-
-  &:hover {
-    transition: 0.3s all ease-in-out;
-    background-color: black;
-    span {
-      color: white;
-      transition: 0.3s all ease-in-out;
-    }
-  }
-`;
-const ContactButton = styled.div`
-  height: 50px;
-  width: 200px;
-  transition: 0.3s all ease-in-out;
-
-  border-radius: 4px;
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-between;
-
-  align-items: center;
-
-  img {
-    height: 70%;
-    margin-right: 15px;
-  }
-  span {
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 15px;
-    transition: 0.3s all ease-in-out;
-  }
-
-  &:hover {
-    background-color: black;
-    transition: 0.3s all ease-in-out;
-    span {
-      color: white;
-      transition: 0.3s all ease-in-out;
-    }
+  justify-content: center;
+  button {
+    padding: 10px 15px;
+    color: #0197b9;
+    background-color: #293952;
+    cursor: pointer;
   }
 `;

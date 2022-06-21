@@ -1,20 +1,59 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import axios from "axios";
+import { checkError, noUpdateErrorCheck } from "./middlewares/Error";
+
 import styled from "styled-components";
 import ImageContext from "../../context/imageContext/ImageContext";
 import { useNavigate } from "react-router-dom";
+import SKcard from "../../components/SKcard";
+import ErrorMsg from "../../components/ErrorMsg";
+import StatusMsg from "../../components/StatusMsg";
 
 const SkillAdmin = ({}) => {
-  const [file, setFile] = useState(null);
   const title = useRef();
   const description = useRef();
   const category = useRef();
   const navigate = useNavigate();
-  const [skills, setskills] = useState();
 
+  const [tempTitle, setTempTitle] = useState("Title Goes here");
+  const [file, setFile] = useState(null);
+  const [edit, setedit] = useState(false);
+  const [headerError, setheaderError] = useState("");
+
+  const [card, setcard] = useState(null);
+  const [original, setOriginal] = useState(false);
+  const [errorState, setErrorState] = useState({
+    title: "",
+    description: "",
+    file: "",
+    url: "",
+  });
+
+  const genError = (errMsg) => {
+    if (errMsg === "noErrors") {
+      return true;
+    } else {
+      setErrorState(errMsg);
+      setTimeout(() => {
+        setErrorState({
+          title: "",
+          description: "",
+          file: "",
+          url: "",
+        });
+      }, 5000);
+    }
+  };
+
+  const genHeaderError = (errMsg) => {
+    setheaderError(errMsg);
+    setTimeout(() => {
+      setheaderError("");
+    }, 5000);
+  };
   const imageContext = useContext(ImageContext);
 
-  const { addImage, deleteImage, images, loadImage } = imageContext;
+  const { addImage, message, deleteImage, updateImage, images, loadImage } =
+    imageContext;
 
   useEffect(() => {
     loadImage("languages");
@@ -22,32 +61,37 @@ const SkillAdmin = ({}) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (file == null) {
-      console.log("File is empty");
-    } else {
-      console.log("File size is", file.size);
-      const newTitle = JSON.stringify({
-        title: title.current.value,
-        description: description.current.value,
-        skillCategory: category.current.value,
-        type: "languages",
-        url: "None",
-        site_url: "none",
-      });
-      console.log(newTitle);
-      const data = new FormData();
-      data.append("file", file);
-      data.append("projectData", newTitle);
-      console.log(data);
+    const formData = {
+      title: title.current.value,
+      description: description.current.value,
+      skillCategory: category.current.value,
+      type: "languages",
+      url: "None",
+      site_url: "none",
+    };
+    const errorState = genError(
+      checkError(file, formData.title, formData.description)
+    );
+    if (errorState === true) {
       try {
+        const newTitle = JSON.stringify(formData);
+        const data = new FormData();
+        data.append("file", file);
+        data.append("projectData", newTitle);
         addImage(data);
-        console.log("Image added");
       } catch (error) {
-        console.log(error);
+        genHeaderError("Something Wrong");
       }
+    } else {
+      genHeaderError("Fill all the fields");
     }
   };
-
+  const handleEdit = async (item) => {
+    setcard(() => {
+      return item;
+    });
+    setedit(true);
+  };
   async function deleteItem(item) {
     const data = {
       id: item,
@@ -55,40 +99,158 @@ const SkillAdmin = ({}) => {
     deleteImage(data);
   }
 
+  const updateHandler = (e) => {
+    e.preventDefault();
+    if (original === true) {
+      const newData = {
+        imageData: {
+          title: title.current.value,
+          description: description.current.value,
+          type: "languages",
+          url: "None",
+          site_url: "none",
+          id: card._id,
+          category: card.category,
+        },
+      };
+      const errorState = genError(
+        noUpdateErrorCheck(
+          newData.imageData.title,
+          newData.imageData.description
+        )
+      );
+      if (errorState === true) {
+        try {
+          updateImage(newData);
+        } catch (error) {
+          genHeaderError("Something Wrong");
+        }
+      } else {
+        genHeaderError("Fill all the fields");
+      }
+    } else {
+      const formData = {
+        title: title.current.value,
+        description: description.current.value,
+        type: "languages",
+        url: "None",
+        site_url: "none",
+        id: card._id,
+        category: card.category,
+        url: card.url,
+        path: card.path,
+      };
+      const errorState = genError(
+        checkError(file, formData.title, formData.description)
+      );
+      if (errorState === true) {
+        try {
+          const newData = JSON.stringify(formData);
+          const data = new FormData();
+          data.append("file", file);
+          data.append("projectupdateData", newData);
+          updateImage(data);
+        } catch (error) {
+          genHeaderError("Something Wrong");
+        }
+      } else {
+        genHeaderError("Fill all the fields");
+      }
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         <LeftBox>
-          <h2>Add New Skill</h2>
+          {edit ? <h2>Edit </h2> : <h2>Add New Skill</h2>}
+          {edit && <h2 onClick={() => setedit(false)}>Add New Skill</h2>}
           <LContainer>
-            <form onSubmit={submitHandler}>
+            {headerError && <StatusMsg fail={headerError} />}
+            {message && <StatusMsg success={message} />}
+            <form onSubmit={edit ? updateHandler : submitHandler}>
               <Name>
                 <label htmlFor="">Enter title</label>
-                <input type="text" ref={title} />
+                <input
+                  type="text"
+                  ref={title}
+                  defaultValue={edit ? card.title : ""}
+                  onChange={(e) => setTempTitle(e.target.value)}
+                />
+                {errorState.title && <ErrorMsg eMsg={errorState.title} />}
               </Name>
               <Name>
                 <label htmlFor="">Enter Description</label>
-                <input type="text" ref={description} />
+                <input
+                  type="text"
+                  ref={description}
+                  defaultValue={edit ? card.description : ""}
+                />
+                {errorState.description && (
+                  <ErrorMsg eMsg={errorState.description} />
+                )}
               </Name>
               <Name>
                 <label htmlFor="">Select Category</label>
-                <select ref={category}>
-                  <option value="dbms">dbms</option>
-                  <option value="language">languages</option>
-                  <option value="framework">frameworks</option>
-                  <option value="tool">tools</option>
-                </select>
+                {!edit && (
+                  <select ref={category}>
+                    <option value="dbms">dbms</option>
+                    <option value="language" selected>
+                      languages
+                    </option>
+                    <option value="framework">frameworks</option>
+                    <option value="tool">tools</option>
+                  </select>
+                )}
               </Name>
               <Url>
                 <label htmlFor="">Insert Image</label>
                 <input
                   type="file"
                   accept=" .png, .jpeg, .jpg"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  // onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    setOriginal(false);
+                    setFile(e.target.files[0]);
+                  }}
                   // onChange={(e) => console.log(e.target.files[0])}
                 />
+                {errorState.file && <ErrorMsg eMsg={errorState.file} />}
+                {edit && (
+                  <EditButton
+                    onClick={() => {
+                      setOriginal(true);
+                    }}
+                  >
+                    hellow
+                  </EditButton>
+                )}
+                <SKcard
+                  name={!tempTitle ? card.title : tempTitle}
+                  imgLink={() => {
+                    if (!file && edit && !original) {
+                      return card.path;
+                    } else if (!edit && file && !original) {
+                      return URL.createObjectURL(file);
+                    } else if (edit && file && !original) {
+                      return URL.createObjectURL(file);
+                    } else if (original && edit && file) {
+                      return card.path;
+                    } else if (original && edit && !file) {
+                      return card.path;
+                    } else if (original && !edit && file) {
+                      return URL.createObjectURL(file);
+                    } else {
+                      const link = require("../../assets/media/sample.jpg");
+                      return link;
+                    }
+                  }}
+                />
               </Url>
-              <SubmitButton type="submit">Add New Skill</SubmitButton>
+
+              <SubmitButton type="submit">
+                {edit ? "Update" : "Add New Skill"}
+              </SubmitButton>
             </form>
           </LContainer>
         </LeftBox>
@@ -98,19 +260,30 @@ const SkillAdmin = ({}) => {
             {images ? (
               images.map((item) => {
                 return (
-                  <Row key={item._id}>
-                    <Title>{item.title}</Title>
-                    <EditButton>Edit</EditButton>
-                    <DeleteButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        deleteItem(item);
-                      }}
-                    >
-                      Delete
-                    </DeleteButton>
-                    <HideButton>Hide</HideButton>
-                  </Row>
+                  <div key={item._id}>
+                    <SKcard imgLink={item.path} name={item.title} />
+                    <Row>
+                      <EditButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setFile(null);
+                          setOriginal(true);
+                          handleEdit(item);
+                        }}
+                      >
+                        Edit
+                      </EditButton>
+                      <DeleteButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          deleteItem(item);
+                        }}
+                      >
+                        Delete
+                      </DeleteButton>
+                      <HideButton>Hide</HideButton>
+                    </Row>
+                  </div>
                 );
               })
             ) : (
