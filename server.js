@@ -8,7 +8,7 @@ const fs = require("fs");
 const dotenv = require("dotenv").config({ path: "./config/config.env" });
 
 const session = require("express-session");
-const url = process.env.mongoURL;
+const url = process.env.MONGO_URL;
 mongoose
   .connect(url, {
     useNewUrlParser: true,
